@@ -2,7 +2,7 @@ namespace TryBets.Bets.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-public class Bet
+public class Bet //iniciando projeto
 {
     [Key]
     public int BetId { get; set; }

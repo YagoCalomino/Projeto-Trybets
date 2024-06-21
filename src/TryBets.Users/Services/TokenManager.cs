@@ -20,7 +20,22 @@ namespace TryBets.Users.Services
 
         public string Generate(User user)
         {
-            throw new NotImplementedException();
+            var identityClaims = new ClaimsIdentity();
+            identityClaims.AddClaim(new Claim(ClaimTypes.Email, user.Email!));
+
+            var jwtTokenHandler = new JwtSecurityTokenHandler();
+            var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_tokenOptions.Secret!));
+            var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256Signature);
+
+            var securityTokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = identityClaims,
+                SigningCredentials = signingCredentials,
+                Expires = DateTime.Now.AddDays(_tokenOptions.ExpiresDay)
+            };
+
+            var securityToken = jwtTokenHandler.CreateToken(securityTokenDescriptor);
+            return jwtTokenHandler.WriteToken(securityToken);
         }
     }
 }

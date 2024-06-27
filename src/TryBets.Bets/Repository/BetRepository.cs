@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace TryBets.Bets.Repository;
 
-public class BetRepository : IBetRepository
+public class BetRepository : IBetRepository //segunda tentativa
 {
     protected readonly ITryBetsContext _context;
     public BetRepository(ITryBetsContext context)

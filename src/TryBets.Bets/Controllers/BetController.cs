@@ -30,7 +30,8 @@ public class BetController : Controller
         {
             var token = HttpContext.User.Identity as ClaimsIdentity;
             var email = token?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
-            return Created("", _repository.Post(request, email!));
+            var result = _repository.Post(request, email!);
+            return Created("", result);
         }
         catch (Exception ex)
         {
@@ -47,7 +48,8 @@ public class BetController : Controller
         {
             var token = HttpContext.User.Identity as ClaimsIdentity;
             var email = token?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
-            return Ok(_repository.Get(BetId, email!));
+            var result = _repository.Get(BetId, email!);
+            return Ok(result);
         }
         catch (Exception ex)
         {

@@ -21,16 +21,14 @@ public class UserController : Controller
     {
         try
         {
-            var newUser = _repository.Post(user);
-            var tokenManager = new TokenManager();
-            var token = tokenManager.Generate(newUser);
-            var authResponse = new AuthDTOResponse { Token = token };
-            return Created("", authResponse);
+            User createdUser = _repository.Post(user);
+            string generatedToken = new TokenManager().Generate(createdUser);
+            AuthDTOResponse authResponse = new AuthDTOResponse { Token = generatedToken };
+            return Created(string.Empty, authResponse);
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            var errorResponse = new { message = ex.Message };
-            return BadRequest(errorResponse);
+            return BadRequest(new { error = e.Message });
         }
     }
 
@@ -39,16 +37,14 @@ public class UserController : Controller
     {
         try
         {
-            var userFound = _repository.Login(login);
-            var tokenManager = new TokenManager();
-            var token = tokenManager.Generate(userFound);
-            var authResponse = new AuthDTOResponse { Token = token };
-            return Ok(authResponse);
+            User authenticatedUser = _repository.Login(login);
+            string userToken = new TokenManager().Generate(authenticatedUser);
+            AuthDTOResponse loginResponse = new AuthDTOResponse { Token = userToken };
+            return Ok(loginResponse);
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            var errorResponse = new { message = ex.Message };
-            return BadRequest(errorResponse);
+            return BadRequest(new { error = e.Message });
         }
     }
 }
